@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MathJax Test Page interactive equations</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="Author" content="cel">
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+	tex2jax: {
+          inlineMath: [["$","$"],["\\(","\\)"]]
+        },
+	messageStyle: "none",
+    jax: ["input/TeX","output/HTML-CSS"],
+    "HTML-CSS": {
+      availableFonts:[],
+      styles: {".MathJax_Preview": {visibility: "hidden"}}
+    }
+  });
+</script>
+
+<script type="text/javascript"
+	src="./mathjax/MathJax.js"></script>
+
+<script type="text/javascript"
+	src="./mymathjaxlib_vectorsolution.js"></script>
+
+
+<style>
+	h1 {
+		text-align: center
+	}
+	
+	h2 {
+		font-weight: bold;
+		background-color: #DDDDDD;
+		padding: .2em .5em;
+		margin-top: 1.5em;
+		border-top: 3px solid #666666;
+		border-bottom: 2px solid #999999;
+	}
+	table, th, td {
+   	border: 1px solid black;
+	}
+	td {
+		padding: 12px;
+		font-size: large;
+	}
+	input {
+		height: 3em;
+	}
+	input[type=submit] {
+    	height: 3em;
+    	-webkit-appearance: none;
+	}
+		
+</style>
+
+
+
+
+
+</head>
+<body>
+
+	<noscript>
+		<div style="color: #CC0000; text-align: center">
+			<b>Warning: <a href="http://www.mathjax.org/">MathJax</a>
+				requires JavaScript to process the mathematics on this page.<br />
+				If your browser supports JavaScript, be sure it is enabled.
+			</b>
+		</div>
+		<hr>
+	</noscript>
+
+<h1>Interaktive opgaver af typen $$ax+b=cx+d$$</h1>
+<br>
+Resultater indenfor en margin af 0.2 tages som korrekte.
+<br>	
+	<div id="thecontainer"></div>
+	
+</body>
+</html>
+
+<script>
+
+mysetup("thecontainer", generate_opg2, test_result, 1, "x=","");
+	
+	// opgaver af ax+b=cx+d
+	function generate_opg2(){
+		var a = random(-9, 9);
+		if (a==0){a=1;}
+		var b = random(-9, 9);
+		var c = random(-9, 9);
+		if (c==0 || c==a){c=a-2;}
+		var d = random(-9, 9);
+		
+		var tb ="";
+		if (b>0){
+			tb="+"+b;
+		} else 
+		if (b < 0){
+			tb=""+b;
+		} else
+			if (b==0){
+				tb ="";
+		}
+		var td ="";
+		if (d>0){
+			td="+"+d;
+		} else 
+		if (d < 0){
+			td=""+d;
+		} else
+			if (d==0){
+				td ="";
+		}
+
+		return ["$"+a+"x"+tb+"="+c+"x"+td+"$", (d-b)/(a-c)];		
+	}
+	
+	// tester om angivne resultat er korrekt
+	// svar is a string containing the users anwer
+	// facit is a string containing the result generated from the above generate funktion
+	function test_result(svar, facit, type){
+		
+		var resultat = parseFloat(facit);
+		
+		svar2 = (svar[0]).replace(',','.');
+		var svartal = parseFloat(svar2);
+
+		// test hvis rigtigt
+		if (Math.abs(svartal-resultat)<0.2){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function random(min_random, max_random) {
+		var range = max_random - min_random + 1;
+		return Math.floor(Math.random() * range) + min_random;
+	}
+
+</script>

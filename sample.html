@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MathJax Test Page interactive equations</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="Author" content="cel">
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+	tex2jax: {
+          inlineMath: [["$","$"],["\\(","\\)"]]
+        },
+	messageStyle: "none",
+    jax: ["input/TeX","output/HTML-CSS"],
+    "HTML-CSS": {
+      availableFonts:[],
+      styles: {".MathJax_Preview": {visibility: "hidden"}}
+    }
+  });
+</script>
+
+<script type="text/javascript"
+	src="//cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+
+<style>
+h1 {
+	text-align: center
+}
+
+h2 {
+	font-weight: bold;
+	background-color: #DDDDDD;
+	padding: .2em .5em;
+	margin-top: 1.5em;
+	border-top: 3px solid #666666;
+	border-bottom: 2px solid #999999;
+}
+</style>
+
+
+
+
+
+</head>
+<body>
+
+	<noscript>
+		<div style="color: #CC0000; text-align: center">
+			<b>Warning: <a href="http://www.mathjax.org/">MathJax</a>
+				requires JavaScript to process the mathematics on this page.<br />
+				If your browser supports JavaScript, be sure it is enabled.
+			</b>
+		</div>
+		<hr>
+	</noscript>
+
+	<h1>Interaktive opgaver</h1>
+
+	<style>
+		table, th, td {
+    	border: 1px solid black;
+		}
+		td {
+			padding: 12px;
+			font-size: large;
+		}
+		
+	</style>
+	
+	<button onclick="start(this, 1)">Start</button>		
+	<table id="table_exercises_1" style="border: 1px; width: 600px" >
+		<tr id="rowstart">
+			<td>opgave</td><td style="width:5px"></td><td>loesning</td><td>korrekt?</td>
+		</tr>
+		
+		
+	</table>
+		</div>
+
+	</div>
+
+</body>
+</html>
+
+<script>
+// GRIMT MEN TODO
+// globale variable
+var tableId = "table_exercises_1";
+
+
+	function start(e, arg){
+		generate_new_exercise();
+		e.disabled = true;
+	}
+	
+	function test_and_new_exercise(e){
+		
+		var thecaller = e.getAttribute("countid");
+		var tries = parseInt(e.getAttribute("tries"));
+		tries = tries + 1;
+		e.setAttribute("tries", tries);
+		
+		var resultat = parseFloat(e.getAttribute("resultattystys"));
+		var korrektfelt = document.getElementById("korrekt_"+thecaller);
+		
+
+		var svar = document.getElementById("result_"+thecaller).value;
+		
+		svar2 = svar.replace(',','.');
+		var svartal = parseFloat(svar2);
+		
+		// test hvis rigtigt
+		if (Math.abs(svar-resultat)<0.2){
+			//korrekt
+			korrektfelt.innerHTML = "Korrekt: Forsoeg: "+tries + " Svar: "+resultat;
+			korrektfelt.setAttribute("style", "background-color:green;");
+			korrektfelt.setAttribute("solved", true);
+			generate_new_exercise();
+			e.disabled = true;
+			
+			// hvis mange rigtige næste type opgaver.
+			if (thecaller >= 3){
+				
+				var t1 = document.getElementById("korrekt_"+thecaller).getAttribute("solved");
+				var t2 = document.getElementById("korrekt_"+(thecaller-1)).getAttribute("solved");
+				var t3 = document.getElementById("korrekt_"+(thecaller-2)).getAttribute("solved");
+				
+				var t1b = (t1 === 'true');
+				var t2b = (t2 === 'true');
+				var t3b = (t3 === 'true');
+				
+				if (t1b && t2b && t3b){
+					alert("klaret tre i træk");
+				}
+			}
+				
+		} else {
+			//forkert
+			
+			korrektfelt.innerHTML = "Forkert: Forsoeg: "+tries;
+			korrektfelt.setAttribute("style", "background-color:red;");
+			// hvis mange forkerte forsøg ny opgave og marker som ikke løst.
+			if (tries>3){
+				korrektfelt.innerHTML = "IKKE løst. Forsøg: "+tries + "Svar: "+resultat;
+				generate_new_exercise();
+				e.disabled = true;
+			}
+		}
+						
+	}
+	
+	function generate_new_exercise(){
+		var table = document.getElementById(tableId);
+		
+		var no_of_rows = document.getElementById(tableId).getElementsByTagName("tr").length;
+
+		// Create an empty <tr> element and add it to the 1st position of the table:
+		var row = table.insertRow(no_of_rows);
+		row.setAttribute("id", "row"+no_of_rows);
+		
+		// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+		var cell1 = row.insertCell(0);
+		cell1.setAttribute('id', 'opg_'+no_of_rows);
+		
+		var cell2 = row.insertCell(1);
+		
+		var cell3 = row.insertCell(2);
+		
+		var txt1 = document.createTextNode("x=");
+		var input1 = document.createElement("input");
+		input1.setAttribute('type', 'text');
+		input1.setAttribute('value', '');
+		input1.setAttribute('id', 'result_'+no_of_rows);
+		var input2 = document.createElement("input");
+		input2.setAttribute('type', 'submit');
+		input2.setAttribute('value', 'test');
+		input2.setAttribute('id', 'submit_'+no_of_rows);
+		input2.setAttribute('onclick', 'test_and_new_exercise(this)');
+		var att = document.createAttribute("countid");       
+		att.value = no_of_rows;                          
+		input2.setAttributeNode(att); 
+		var att2 = document.createAttribute("tries");       
+		att2.value = 0;                          
+		input2.setAttributeNode(att2); 
+		
+		
+		
+		cell3.appendChild(txt1);
+		cell3.appendChild(input1);
+		cell3.appendChild(input2);
+		
+		var cell4 = row.insertCell(3);
+		cell4.innerHTML = "";
+		cell4.setAttribute('id', 'korrekt_'+no_of_rows);
+		var att4 = document.createAttribute("solved");       
+		att4.value = false;                          
+		cell4.setAttributeNode(att4); 
+		
+		var nyopg = generate_opg1();
+		//alert(nyopg);
+		cell1.innerHTML = nyopg[0];
+		var att3 = document.createAttribute("resultattystys");       
+		att3.value = nyopg[1];                          
+		input2.setAttributeNode(att3); 
+		
+		cell2.innerHTML = "";
+
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"opg_"+no_of_rows]);
+		row.scrollIntoView();
+	}
+
+
+	// opgaver af ax+b=c
+	function generate_opg1(){
+		var a = random(-9, 9);
+		if (a==0){a=1;}
+		var b = random(-9, 9);
+		var c = random(-9, 9);
+		
+		var tb ="";
+		if (b>0){
+			tb="+"+b;
+		} else 
+		if (b < 0){
+			tb=""+b;
+		} else
+			if (b==0){
+				tb ="";
+			}
+		return ["$"+a+"x"+tb+"="+c+"$", (c-b)/a];	
+	}
+	
+	// opgaver af ax+b=cx+d
+	function generate_opg2(){
+		var a = random(-9, 9);
+		if (a==0){a=1;}
+		var b = random(-9, 9);
+		var c = random(-9, 9);
+		if (c==0 || c==a){c=a-2;}
+		var d = random(-9, 9);
+		
+		var tb ="";
+		if (b>0){
+			tb="+"+b;
+		} else 
+		if (b < 0){
+			tb=""+b;
+		} else
+			if (b==0){
+				tb ="";
+		}
+		var td ="";
+		if (d>0){
+			td="+"+d;
+		} else 
+		if (d < 0){
+			td=""+d;
+		} else
+			if (d==0){
+				td ="";
+		}
+
+		return ["$"+a+"x"+tb+"="+c+"x"+td+"$", (d-b)/(a-c)];		
+	}
+	
+	
+	function random(min_random, max_random) {
+		var range = max_random - min_random + 1;
+		return Math.floor(Math.random() * range) + min_random;
+	}
+	function parseIntPlus(st) {
+		// "-4" -> -4, "+5" -> 5
+		var str = st;
+		if (str.charAt(0) == "+") {
+			str = str.substr(1);
+		}
+		if (str.charAt(0) == "−") {
+			str = "-" + str.substr(1);
+		}
+		var value = parseInt(str);
+		return (value);
+	}
+	function StringPlus(x, Flag) {
+		// -4 -> "-4", 5 -> "+5"
+		var flag = (Flag !== undefined) ? Flag : false;
+		var value = String(x);
+		if (x >= 0 && !flag) {
+			value = "+" + value;
+		}
+		return value;
+	}
+
+	var a = random(-9, 0), b = random(0, 9);
+	function formulaCodeGeneric(a, b) {
+		var valueInt = b * b * b - a * a * a;
+		var formulaCode = "\\[  \\int_{ \\cssId{a}{\\class{dynamic}{"
+				+ StringPlus(a, true) + "}}}^{ \\cssId{b}{\\class{dynamic}{"
+				+ StringPlus(b, true) + "}}} x^2 dx = " + String(valueInt)
+				+ " \\]";
+		return formulaCode;
+
+	}
+	//document.getElementById("myDiv").innerHTML = formulaCodeGeneric(a, b);
+	MathJax.Hub.Queue(function() {
+		//addEvents();
+	});
+
+</script>

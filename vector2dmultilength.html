@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interaktive opgaver</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="Author" content="cel">
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+	tex2jax: {
+          inlineMath: [["$","$"],["\\(","\\)"]]
+        },
+	messageStyle: "none",
+    jax: ["input/TeX","output/HTML-CSS"],
+    "HTML-CSS": {
+      availableFonts:[],
+      styles: {".MathJax_Preview": {visibility: "hidden"}}
+    }
+  });
+</script>
+
+<script type="text/javascript"
+		src="./mathjax/MathJax.js"></script>
+
+<script type="text/javascript"
+	src="./mymathjaxlib_vectorsolution.js"></script>
+
+
+<style>
+	h1 {
+		text-align: center
+	}
+	
+	h2 {
+		font-weight: bold;
+		background-color: #DDDDDD;
+		padding: .2em .5em;
+		margin-top: 1.5em;
+		border-top: 3px solid #666666;
+		border-bottom: 2px solid #999999;
+	}
+
+	table, th, td {
+   	border: 1px solid black;
+	}
+	td {
+		padding: 12px;
+		font-size: large;
+	}
+	input {
+		height: 3em;
+	}
+	input[type=submit] {
+    	height: 3em;
+    	-webkit-appearance: none;
+	}
+
+</style>
+
+
+
+
+
+</head>
+<body>
+
+	<noscript>
+		<div style="color: #CC0000; text-align: center">
+			<b>Warning: <a href="http://www.mathjax.org/">MathJax</a>
+				requires JavaScript to process the mathematics on this page.<br />
+				If your browser supports JavaScript, be sure it is enabled.
+			</b>
+		</div>
+		<hr>
+	</noscript>
+
+	<h1>Interaktive opgaver af typen $$ \left\|  c \cdot  \left( \begin{matrix}a\\ b \\ \end{matrix} \right)     \right\|     $$</h1>
+<br>
+Resultater indenfor en margin af 0.1 tages som korrekte.
+<br>
+
+	<div id="thecontainer"></div>
+	
+</body>
+</html>
+
+<script>
+var left_text="$$ \\left\\| \\overrightarrow x \\right\\| =$$";
+var right_text="";
+mysetup("thecontainer", generate_opg, test_result, 1, left_text, right_text);
+
+	// opgaver af ax+b=c
+	// array [opgave, svar]
+	function generate_opg(){
+		var a = random(-6, 6);
+		var b = random(-6, 6);
+		var c = random(-6, 6);
+		var d = random(-6, 6);
+		
+		// note to self remember ekstra \ because of the html parsing i guess
+		var st = "$$ \\left\\| \\overrightarrow x \\right\\| = \\left\\|  "+c+" \\cdot  \\left( \\begin{matrix}"+a+" \\\\ "+b+" \\\\ \\end{matrix} \\right)     \\right\\|$$";
+		
+		return [st, Math.abs(c)*Math.sqrt(a*a+b*b)];	
+	}
+	
+	// tester om angivne resultat er korrekt
+	// svar is a string containing the users anwer
+	// facit is a string containing the result generated from the above generate funktion
+	function test_result(svar, facit, type){
+		
+		//alert(svar.length+" "+facit);
+		
+		var f= facit.split(";");
+		var resultat_1 = parseFloat(f[0]);
+		//var resultat_2 = parseFloat(f[1]);
+		
+		svar_1 = svar[0].replace(',','.');
+		//svar_2 = svar[1].replace(',','.');
+		var svartal_1 = parseFloat(svar_1);
+		//var svartal_2 = parseFloat(svar_2);
+
+		// test hvis rigtigt
+		if (Math.abs(svartal_1-resultat_1)<0.1){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	
+	function random(min_random, max_random) {
+		var range = max_random - min_random + 1;
+		return Math.floor(Math.random() * range) + min_random;
+	}
+
+</script>

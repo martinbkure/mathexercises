@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interaktive opgaver</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="Author" content="cel">
+
+<script src="http://www.geogebra.org/scripts/deployggb.js"></script>
+</head>
+
+<body>
+
+	<div style="width:60%;height:500px;display:block; float:left;" id="applet_container1"></div>
+	
+</body>
+
+</html>
+
+<script type="text/javascript">
+ var parameters = {
+ "id": "ggbApplet",
+ "width":700,
+ "height":500,
+ "filename": "./simple_geogebra_applet.ggb"
+ };
+ var applet = new GGBApplet(parameters, '5.0');
+ //applet.setHTML5Codebase('GeoGebra/HTML5/5.0/web3d/');
+ 
+ window.onload = function() {
+	 applet.inject('applet_container1') 
+ };
+  
+</script>

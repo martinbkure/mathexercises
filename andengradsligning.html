@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interaktive opgaver</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="Author" content="cel">
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+	tex2jax: {
+          inlineMath: [["$","$"],["\\(","\\)"]]
+        },
+	messageStyle: "none",
+    jax: ["input/TeX","output/HTML-CSS"],
+    "HTML-CSS": {
+      availableFonts:[],
+      styles: {".MathJax_Preview": {visibility: "hidden"}}
+    }
+  });
+</script>
+
+<script type="text/javascript"
+	src="./mathjax/MathJax.js"></script>
+
+
+<script type="text/javascript"
+	src="./mymathjaxlib_reduktions.js"></script>
+
+
+<style>
+	h1 {
+		text-align: center
+	}
+	
+	h2 {
+		font-weight: bold;
+		background-color: #DDDDDD;
+		padding: .2em .5em;
+		margin-top: 1.5em;
+		border-top: 3px solid #666666;
+		border-bottom: 2px solid #999999;
+	}
+
+	table, th, td {
+   	border: 1px solid black;
+	}
+	td {
+		padding: 12px;
+		font-size: large;
+	}
+	input {
+		height: 3em;
+	}
+	input[type=submit] {
+    	height: 3em;
+    	-webkit-appearance: none;
+	}
+
+</style>
+
+
+
+
+
+</head>
+<body>
+
+	<noscript>
+		<div style="color: #CC0000; text-align: center">
+			<b>Warning: <a href="http://www.mathjax.org/">MathJax</a>
+				requires JavaScript to process the mathematics on this page.<br />
+				If your browser supports JavaScript, be sure it is enabled.
+			</b>
+		</div>
+		<hr>
+	</noscript>
+
+	<h1>Interaktive opgaver af typen $$ax^2+bx+c=0$$</h1>
+<br>
+Resultater skal angives som: ingen løsning: o, en løsning: x=2, to løsninger: x=3 v x=5 med den mindste først."
+<br>
+
+	<div id="thecontainer"></div>
+	
+</body>
+</html>
+
+<script>
+
+mysetup("thecontainer", generate_opg2, test_result);
+
+	// opgaver af ax^2+bx+c=0
+	// array [opgave, svar]
+	function generate_opg2(){
+		
+		var solu = random(0, 2);
+		var a,b,c,res;
+		
+		if (solu==0){
+			a = random(-3, 3);
+			if (a==0) { a=1; }
+			c = random(-4, 4);
+			if (c==0) { c=1; }
+			if (a*c < 0){ c = -c; }
+			if (Math.floor(Math.sqrt(4*a*c)) == Math.sqrt(4*a*c)){
+				b = Math.floor(Math.sqrt(4*a*c))-1;
+			} else {
+				b = Math.floor(Math.sqrt(4*a*c));
+			}
+			res = "o";
+		} else
+		if (solu==1){
+			var s1 = random(-4, 4);
+			a = random(-3, 3);
+			if (a==0) { a=1;}
+			b=-2*a*s1;
+			c=a*s1*s1;
+			res = "x="+s1;
+		} else
+		if (solu==2){
+			var s1 = random(-4, 4);
+			var s2 = random(-4, 4);
+			if (s1==s2) { s1=s1+1;}
+			a = random(-3, 3);
+			if (a==0) { a=1;}
+			b = 0 - a*(s1+s2);
+			c = a*s1*s2;
+			
+			if (s1<s2){
+				res = "x="+s1+"vx="+s2;
+			} else {
+				res = "x="+s2+"vx="+s1;
+			}
+		} 
+		var ta,tb,tc;
+		ta="x^2"; tb="x"; tc="";
+		
+		if (a!=1){ ta = a+ta;}
+		if (a==-1){ ta = "-x^2";}
+		
+		if (b!=1){ tb = b+tb;}
+		if (b==-1){ tb = "-x";}
+		if (b==0){ tb = "";}
+		if (b>0){ tb = "+"+tb;}
+		if (c!=0){ tc = ""+c;}else {tc="";}
+		if (c>0){ tc = "+"+tc;}
+		
+		//alert("$"+ta+tb+tc+"=0$"+" res:"+ res);
+		return ["$"+ta+tb+tc+"=0$", res];		
+	}
+	
+	// tester om angivne resultat er korrekt
+	// svar is a string containing the users anwer
+	// facit is a string containing the result generated from the above generate funktion
+	function test_result(svar, facit, type){
+		
+		var pattern = " ";
+	    var re = new RegExp(pattern, "g");
+		
+		svar2 = svar.replace(re,'');
+		
+
+		// test hvis rigtigt
+		if (svar2===facit){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function random(min_random, max_random) {
+		var range = max_random - min_random + 1;
+		return Math.floor(Math.random() * range) + min_random;
+	}
+
+</script>
