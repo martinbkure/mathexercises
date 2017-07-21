@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "128a162a674d3a67602f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f4457f156e1cda6c5bc8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9450,13 +9450,13 @@ myApp.config(function ($stateProvider, $locationProvider) {
     requireBase: false
   });
 
-  var helloState = {
+  const helloState = {
     name: 'hello',
     url: '/hello',
-    template: '<h3>hello world!</h3>'
+    template: '<h3>hello world, you dog!</h3>'
   };
 
-  var aboutState = {
+  const aboutState = {
     name: 'about',
     url: '/about',
     template: '<h3>Its the UI-Router hello world app!</h3>'
