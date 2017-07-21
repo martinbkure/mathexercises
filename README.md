@@ -5,7 +5,7 @@ self generating and self correcting exercises
 
 ### prompt 1: ###
 
-````
+```
 npm i
 
 npm run dev-server
